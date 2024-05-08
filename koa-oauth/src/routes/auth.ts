@@ -44,15 +44,12 @@ router.post('/auth/login', async (ctx) => {
     const user = await findUser(email);
     if (!user) {
       ctx.status = 401; // Unauthorized
-      ctx.body = { error: 'Invalid email or password' };
+      ctx.body = { error: 'User not found' };
       return;
     }
 
-    // Concatenate the provided password with the stored salt
-    const hashedPassword = await bcrypt.hash(password, user.salt);
-
     // Compare the hashed password with the stored hash
-    const isPasswordValid = await bcrypt.compare(hashedPassword, user.passwordHash);
+    const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
     if (!isPasswordValid) {
       ctx.status = 401; // Unauthorized
       ctx.body = { error: 'Invalid email or password' };
@@ -60,7 +57,7 @@ router.post('/auth/login', async (ctx) => {
     }
 
     // Generate a JWT
-    // TODO: use environmne variable for secret key
+    // TODO: use environment variable for secret key
     const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
 
     // Return the JWT in the response

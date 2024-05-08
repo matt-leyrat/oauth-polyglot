@@ -23,8 +23,7 @@ export const createUser = async (username: string, email: string, password: stri
   const newUser = new User({
     username,
     email,
-    passwordHash,
-    salt
+    passwordHash
   });
 
   // Save the user to the database

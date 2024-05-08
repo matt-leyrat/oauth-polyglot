@@ -6,7 +6,6 @@ export class User extends Model {
   public username!: string;
   public email!: string;
   public passwordHash!: string;
-  public salt!: string;
 }
 
 User.init(
@@ -26,10 +25,6 @@ User.init(
       unique: true
     },
     passwordHash: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    salt: {
       type: DataTypes.STRING,
       allowNull: false
     }

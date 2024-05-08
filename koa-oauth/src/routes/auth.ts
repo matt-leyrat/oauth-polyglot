@@ -2,7 +2,7 @@ import Router from 'koa-router';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-import { createUser, findUser } from '../controller/auth';
+import { createUser, findUser } from '../controller/user';
 
 interface RegisterRequestBody {
   username: string;
@@ -18,7 +18,7 @@ interface LoginRequestBody {
 
 const router = new Router();
 
-router.post('/user/register', async (ctx) => {
+router.post('/auth/register', async (ctx) => {
   try {
     // Get user data from request body
     const { username, email, password } = ctx.request.body as RegisterRequestBody;
@@ -36,7 +36,7 @@ router.post('/user/register', async (ctx) => {
   }
 });
 
-router.post('/user/login', async (ctx) => {
+router.post('/auth/login', async (ctx) => {
   try {
     const { email, password } = ctx.request.body as LoginRequestBody;
 

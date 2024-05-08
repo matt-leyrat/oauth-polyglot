@@ -1,0 +1,22 @@
+# Compiled output
+/build
+/dist
+
+# Dependencies
+/node_modules
+
+# IDEs and editors
+/.idea
+/.vscode
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# TypeScript cache
+*.tsbuildinfo
+
+# todo
+todo

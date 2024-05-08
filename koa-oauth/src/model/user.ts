@@ -24,10 +24,14 @@ User.init(
       allowNull: false,
       unique: true,
     },
-    password: {
+    passwordHash: {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    salt: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    }
   },
   {
     sequelize,

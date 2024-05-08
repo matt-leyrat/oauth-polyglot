@@ -14,28 +14,28 @@ User.init(
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      primaryKey: true,
+      primaryKey: true
     },
     username: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: true
     },
     passwordHash: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
     salt: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     }
   },
   {
     sequelize,
-    modelName: 'User',
-  },
+    modelName: 'User'
+  }
 );

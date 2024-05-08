@@ -5,7 +5,8 @@ export class User extends Model {
   public id!: number;
   public username!: string;
   public email!: string;
-  public password!: string;
+  public passwordHash!: string;
+  public salt!: string;
 }
 
 User.init(

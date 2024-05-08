@@ -10,10 +10,7 @@ interface UserFindOptions extends FindOptions {
 
 export const createUser = async (username: string, email: string, password: string) => {
   // Check if user already exists
-  const findOptions: UserFindOptions = {
-    where: { email }
-  };
-  const existingUser = await User.findOne(findOptions);
+  const existingUser = await findUser(email);
   if (existingUser) {
     throw new Error('Email already in use');
   }
@@ -39,4 +36,12 @@ export const createUser = async (username: string, email: string, password: stri
     username: savedUser.username,
     email: savedUser.email,
   };
+};
+
+export const findUser = async (email: string) => {
+  const findOptions: UserFindOptions = {
+    where: { email }
+  };
+  const user = await User.findOne(findOptions);
+  return user;
 };

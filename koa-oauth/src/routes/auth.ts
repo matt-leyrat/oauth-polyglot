@@ -1,7 +1,16 @@
 import Router from 'koa-router';
-import { createUser } from '../controller/auth';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
+import { createUser, findUser } from '../controller/auth';
 
 interface RegisterRequestBody {
+  username: string;
+  email: string;
+  password: string;
+}
+
+interface LoginRequestBody {
   username: string;
   email: string;
   password: string;
@@ -24,6 +33,42 @@ router.post('/user/register', async (ctx) => {
     // Handle errors
     ctx.status = 400; // Bad Request
     ctx.body = { error: err };
+  }
+});
+
+router.post('/user/login', async (ctx) => {
+  try {
+    const { email, password } = ctx.request.body as LoginRequestBody;
+
+    // Find the user by email
+    const user = await findUser(email);
+    if (!user) {
+      ctx.status = 401; // Unauthorized
+      ctx.body = { error: 'Invalid email or password' };
+      return;
+    }
+
+    // Concatenate the provided password with the stored salt
+    const hashedPassword = await bcrypt.hash(password, user.salt);
+
+    // Compare the hashed password with the stored hash
+    const isPasswordValid = await bcrypt.compare(hashedPassword, user.passwordHash);
+    if (!isPasswordValid) {
+      ctx.status = 401; // Unauthorized
+      ctx.body = { error: 'Invalid email or password' };
+      return;
+    }
+
+    // Generate a JWT
+    // TODO: use environmne variable for secret key
+    const token = jwt.sign({ userId: user.id }, 'your_secret_key', { expiresIn: '1h' });
+
+    // Return the JWT in the response
+    ctx.status = 200; // OK
+    ctx.body = { token };
+  } catch (err) {
+    ctx.status = 500; // Internal Server Error
+    ctx.body = { error: 'An error occurred' };
   }
 });
 

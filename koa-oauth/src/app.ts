@@ -2,7 +2,8 @@ import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
 
 import { sequelize } from './config/db';
-import authRouter from './routes/auth'
+import authRouter from './routes/auth';
+import protectedRouter from './routes/protected';
 
 const app = new Koa();
 
@@ -17,6 +18,8 @@ async function main() {
     app.use(bodyParser());
     app.use(authRouter.routes());
     app.use(authRouter.allowedMethods());
+    app.use(protectedRouter.routes());
+    app.use(protectedRouter.allowedMethods());
     // 🚀 start server
     app.listen(3000, () => {
       console.log('Server is running on port 3000');
